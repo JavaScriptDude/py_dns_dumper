@@ -26,8 +26,14 @@ dns_answers={}
 def dump_dns(type):
     try:
         answers = my_resolver.query(domain, type)
-        print('type: %s: %s' % (type, u'\u2714'))
-        dns_answers[type] = answers
+        print('checking: %s: %s' % (type, u'\u2714'))
+
+        dns_answers[type] = list(map(lambda a: \
+                a.exchange if type == 'MX' else \
+                a.address if type in ['A', 'AAAA'] else \
+                a
+            , answers)
+        )
     except dns.resolver.NXDOMAIN:
         _exit('Invalid domain: %s' % domain)
     except Exception as e:
@@ -42,7 +48,7 @@ def dump_dns(type):
             raise e
         
 
-    time.sleep(0.25)
+    time.sleep(0.1)
 
 def _exit(msg):
     print('{}'.format(msg))
@@ -59,5 +65,11 @@ for type in found_types:
     print('type: %s:' % type)
     for rdata in dns_answers[type]:
         print(' . {}'.format(rdata))
+        try:
+            print(' . (address) {}'.format(rdata.address))
+        except:pass
+        try:
+            print(' . (exchange) {}'.format(rdata.exchange))
+        except:pass
 
 print("~")
