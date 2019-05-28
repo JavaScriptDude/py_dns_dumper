@@ -38,7 +38,6 @@ def get_dns_recs(domain, type):
         print('checking: %s: %s' % (type, u'\u2714'))
 
         return list(map(lambda a: \
-                a.exchange if type == 'MX' else \
                 a.address if type in ['A', 'AAAA'] else \
                 a
             , answers)
@@ -80,11 +79,5 @@ for i, dns_answers in enumerate(answer_list):
         print(' %s:' % type)
         for rdata in dns_answers[type]:
             print(' . {}'.format(rdata))
-            try:
-                print(' . (address) {}'.format(rdata.address))
-            except:pass
-            try:
-                print(' . (exchange) {}'.format(rdata.exchange))
-            except:pass
 
 print("~")
