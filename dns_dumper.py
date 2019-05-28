@@ -71,7 +71,8 @@ for domain in domains:
             dns_answers[type] = answers
     answer_list.append(dns_answers)
 
-for dns_answers in answer_list:
+for i, dns_answers in enumerate(answer_list):
+    domain = domains[i]
     print('\nDNS Records found for %s:' % domain)
     found_types = list(dns_answers.keys())
     found_types.sort()
