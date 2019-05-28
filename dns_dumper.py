@@ -39,11 +39,11 @@ def dump_dns(type):
     except Exception as e:
         if isinstance(e, dns.resolver.NoAnswer) \
            or isinstance(e, dns.resolver.NoNameservers):
-            print('type: %s: -' % (type))
+            print('checking: %s: -' % (type))
         elif isinstance(e, dns.rdatatype.UnknownRdatatype):
-            print('type: %s: ?' % (type))
+            print('checking: %s: (unknown)' % (type))
         elif isinstance(e, dns.resolver.NoMetaqueries):
-            print('type: %s: (not allowed)' % (type))
+            print('checking: %s: (not allowed)' % (type))
         else:
             raise e
         
@@ -58,7 +58,7 @@ for type in DNS_REC_TYPES:
     dump_dns(type)
 
 
-print('\n DNS Records found for %s:' % domain)
+print('\nDNS Records found for %s:' % domain)
 found_types = list(dns_answers.keys())
 found_types.sort()
 for type in found_types:
